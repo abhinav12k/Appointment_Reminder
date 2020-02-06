@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Appointment Reminder</string>
+    <string name="appointment">Add Appointment</string>
+
+    <string-array name="Task_type">
+        <item>Personal</item>
+        <item>Work</item>
+        <item>School</item>
+        <item>Health</item>
+        <item>Other</item>
+    </string-array>
+
+</resources>
