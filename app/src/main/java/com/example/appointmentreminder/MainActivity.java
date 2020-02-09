@@ -1,10 +1,12 @@
 package com.example.appointmentreminder;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TableLayout;
@@ -28,7 +30,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        createSomeTestAppointmentsToStartWith();
+        if (savedInstanceState == null) {
+            createSomeTestAppointmentsToStartWith();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelableArrayList("Appointment_ArrayList",appointmentArrayList);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        appointmentArrayList = savedInstanceState.getParcelableArrayList("Appointment_ArrayList");
+
+        for(int i=0;i<appointmentArrayList.size();i++){
+            populateTable(i);
+        }
+
     }
 
     public void createSomeTestAppointmentsToStartWith(){

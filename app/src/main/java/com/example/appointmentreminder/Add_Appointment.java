@@ -40,6 +40,56 @@ public class Add_Appointment extends AppCompatActivity {
         setCurrentDateAndTimeOnView();
     }
 
+    @Override
+    //Saves the currently Selected Date and Time
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("Month", month);
+        outState.putInt("Day", date);
+        outState.putInt("Year", year);
+
+        outState.putInt("Hour", hour);
+        outState.putInt("Minute", minute);
+    }
+
+    // Updates displayed Date or Time through Date/Time pickers
+    void UpdateDisplayedDateOrTime(int DateOrTime){
+
+        switch(DateOrTime) {
+            case 0: //Month Day, Year
+                txtDate.setText(new StringBuilder()
+                        .append(DisplayTheMonthInCharacters(month)).append(" ")
+                        .append(date).append(", ")
+                        .append(year));
+            case 1:
+
+                // set current time into textview
+                txtTime.setText(new StringBuilder().append(pad(hour))
+                        .append(":").append(pad(minute)));
+                txtTime.setText(new StringBuilder()
+                        .append(FormatTheHour(hour)).append(":")
+                        .append(FormatTheMinute(minute)).append(" ")
+                        .append(AMorPM(hour)));
+        }
+
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        month = savedInstanceState.getInt("Month");
+        date = savedInstanceState.getInt("Day");
+        year = savedInstanceState.getInt("Year");
+
+        hour = savedInstanceState.getInt("Hour");
+        minute = savedInstanceState.getInt("Minute");
+
+        UpdateDisplayedDateOrTime(0);
+        UpdateDisplayedDateOrTime(1);
+    }
+
+
     public void setCurrentDateAndTimeOnView() {
 
         txtDate = findViewById(R.id.tvDatepicker);
@@ -194,5 +244,13 @@ public class Add_Appointment extends AppCompatActivity {
         else{ return "AM"; }
     }
 
+    //Meant to correct the display minute for 0-9 "00 vs 0"
+    private String FormatTheMinute(int passedMinute){
+        String forwardMinute = Integer.toString(passedMinute);
+        if(passedMinute < 10){
+            forwardMinute = "0" + forwardMinute;
+        }
+        return forwardMinute;
+    }
 
 }
